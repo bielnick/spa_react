@@ -1,99 +1,107 @@
-import React, {Component} from 'react';
-
-class Resumo extends Component{
-    constructor(props){
+import React, { Component } from 'react';
+import { consultaResumo } from './../../servicos/Resumo';
+class Resumo extends Component {
+    constructor(props) {
         super(props);
         this.state = {
-            consultas : {
-                consultas_30dias_anteriores : 0,
-                consultas_30dias_posteriores : 0
+            consultas: {
+                consultas_30dias_anteiores: 0,
+                consultas_30dias_posteriores: 0
             },
-            faturamento : {
-                anterior : {
+            faturamento: {
+                anterior: {
                     valor: 0,
-                    comparativo : 0
+                    comparativo: 0
                 },
-                previsao : {
+                previsao: {
                     valor: 0,
-                    comparativo : 0
+                    comparativo: 0
                 }
             }
         }
     }
-    render(){
+
+    componentDidMount(){
+        consultaResumo(dataJson => this.setState(dataJson))
+    }
+
+    render() {
         return (
-            <div className="row">
-                <div className="col">
-                    <div className="card mt-2 text-center">
-                        <div className="card-header">
-                        30 dias anteriores
+            <div className="container-fluid">
+                 <h2>Resumo</h2>
+                <div className="row">
+                    <div className="col">
+                        <div className="card mt-2 text-center">
+                            <div className="card-header">
+                                30 dias anteriores
                         </div>
-                        <div className="card-body">
-                        {
-                            this.state
-                                .consultas
-                                .consultas_30dias_anteriores
-                        }
+                            <div className="card-body">
+                                {
+                                    this.state
+                                        .consultas
+                                        .consultas_30dias_anteiores
+                                }
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div className="col">
-                    <div className="card mt-2 text-center">
-                        <div className="card-header">
-                        Próximos 30 dias
+                        <div className="card mt-2 text-center">
+                            <div className="card-header">
+                                Próximos 30 dias
                         </div>
-                        <div className="card-body">
-                        {
-                            this.state
-                                .consultas
-                                .consultas_30dias_posteriores
-                        }
-                        </div>
-                    </div>
-                </div>
-                <div className="col">
-                    <div className="card mt-2 text-center">
-                        <div className="card-header">
-                        30 dias anteriores
-                        </div>
-                        <div className="card-body">
-                        {
-                            this.state.faturamento.anterior
-                                .valor.toLocaleString("pt-BR",
-                                        {
-                                            style: "currency",
-                                            currency: "BRL"
-                                        })
-                        }
-                        <span className="badge ml-1 badge-danger">
-                            {
-                            this.state.faturamento.anterior
-                                                    .comparativo
-                            } %
-                        </span>
+                            <div className="card-body">
+                                {
+                                    this.state
+                                        .consultas
+                                        .consultas_30dias_posteriores
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="col">
-                    <div className="card mt-2 text-center">
-                        <div className="card-header">
-                        Próximos 30 dias
+                    <div className="col">
+                        <div className="card mt-2 text-center">
+                            <div className="card-header">
+                                30 dias anteriores
                         </div>
-                        <div className="card-body">
-                        {
-                            this.state.faturamento.previsao
-                                .valor.toLocaleString("pt-BR",
-                                        {
-                                            style: "currency",
-                                            currency: "BRL"
-                                        })
-                        }
-                        <span className="badge ml-1 badge-danger">
-                            {
-                            this.state.faturamento.previsao
-                                                    .comparativo
-                            } %
+                            <div className="card-body">
+                                {
+                                    this.state.faturamento.anterior
+                                        .valor.toLocaleString("pt-BR",
+                                            {
+                                                style: "currency",
+                                                currency: "BRL"
+                                            })
+                                }
+                                <span className={"badge ml-1 " + (this.state.faturamento.anterior.comparativo > 0 ? "badge-success":"badge-danger") }>
+                                    {
+                                        this.state.faturamento.anterior
+                                            .comparativo
+                                    } %
                         </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col">
+                        <div className="card mt-2 text-center">
+                            <div className="card-header">
+                                Próximos 30 dias
+                        </div>
+                            <div className="card-body">
+                                {
+                                    this.state.faturamento.previsao
+                                        .valor.toLocaleString("pt-BR",
+                                            {
+                                                style: "currency",
+                                                currency: "BRL"
+                                            })
+                                }
+                                <span className={"badge ml-1 " + (this.state.faturamento.previsao.comparativo > 0 ? "badge-success" : "badge-danger") }>
+                                    {
+                                        this.state.faturamento.previsao
+                                            .comparativo
+                                    } %
+                        </span>
+                            </div>
                         </div>
                     </div>
                 </div>
